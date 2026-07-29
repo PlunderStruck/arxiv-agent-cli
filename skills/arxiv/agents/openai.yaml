@@ -1,0 +1,4 @@
+interface:
+  display_name: "arXiv Triage"
+  short_description: "Find and read arXiv papers without context blowups"
+  default_prompt: "Use $arxiv to find relevant papers, triage them, and read only the passages needed to answer."

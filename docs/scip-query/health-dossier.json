@@ -1,0 +1,668 @@
+{
+  "projectRoot": ".",
+  "dbPath": "~/.cache/scip-query/projects/fcdab20e7b02/index.db",
+  "configuredDbPath": "~/.cache/scip-query/projects/fcdab20e7b02/index.db",
+  "scipCliInstalled": true,
+  "languages": [
+    "typescript"
+  ],
+  "steps": [
+    {
+      "id": "automatic-indexing-config",
+      "label": "Automatic indexing config",
+      "status": "ok",
+      "message": "Demand-started automatic incremental indexing is already enabled."
+    },
+    {
+      "id": "scip-cli",
+      "label": "scip CLI",
+      "status": "ok",
+      "message": "scip CLI is available."
+    },
+    {
+      "id": "skills",
+      "label": "Agent skills",
+      "status": "ok",
+      "message": "0 installed, 27 already linked, 0 pruned, 0 skipped.",
+      "details": []
+    },
+    {
+      "id": "config",
+      "label": "Project config",
+      "status": "ok",
+      "message": "Config OK.",
+      "details": []
+    },
+    {
+      "id": "readiness",
+      "label": "Indexer readiness",
+      "status": "ok",
+      "message": "Detected languages: typescript",
+      "details": [
+        "OK typescript: scip-typescript"
+      ]
+    },
+    {
+      "id": "ast-parsers",
+      "label": "AST parser packages",
+      "status": "skipped",
+      "message": "Skipped because installing missing parser packages requires explicit consent.",
+      "details": []
+    },
+    {
+      "id": "indexer-remediation",
+      "label": "Indexer remediation",
+      "status": "skipped",
+      "message": "Skipped because installing missing indexers requires explicit consent."
+    },
+    {
+      "id": "reindex",
+      "label": "Index refresh",
+      "status": "ok",
+      "message": "Reused typescript in 0.1s.",
+      "details": [
+        "Detected languages: typescript",
+        "Augmented SQLite documents with 0 auxiliary source files (0 already present).",
+        "Index unchanged; reused existing SQLite index in 0.1s"
+      ]
+    },
+    {
+      "id": "watch-refresh",
+      "label": "Automatic indexing service",
+      "status": "ok",
+      "message": "reused pid 57060; clean-idle exit scheduled for 2026-07-29T17:33:44.755Z.",
+      "details": [
+        "watcher=idle",
+        "autoRefresh=true",
+        "gitPollMs=2000"
+      ]
+    },
+    {
+      "id": "capabilities",
+      "label": "Capability matrix",
+      "status": "ok",
+      "message": "1/1 language(s) have available indexing."
+    },
+    {
+      "id": "health",
+      "label": "Health audit",
+      "status": "ok",
+      "message": "Health score 100. 1 prioritized action(s)."
+    },
+    {
+      "id": "rust-semantic-session",
+      "label": "Rust semantic session",
+      "status": "skipped",
+      "message": "Skipped because Rust was not detected."
+    },
+    {
+      "id": "project-hooks",
+      "label": "Project agent hooks",
+      "status": "ok",
+      "message": "0 installed, 0 updated, 2 already configured, 0 hook config(s) cleaned up, 0 skipped.",
+      "details": [
+        "Checkout-local Git exclude: .codex/hooks.json",
+        "Checkout-local Git exclude: .claude/settings.local.json"
+      ]
+    },
+    {
+      "id": "agent-guidance",
+      "label": "Project agent guidance",
+      "status": "ok",
+      "message": "0 written, 2 already wired, 0 skipped.",
+      "details": []
+    },
+    {
+      "id": "smoke-tests",
+      "label": "Setup smoke tests",
+      "status": "warn",
+      "message": "12 passed, 1 unavailable, 0 failed.",
+      "details": [
+        "scip-query reindex: pass - typescript indexed from cache.",
+        "scip-query status: pass - Index freshness is fresh: Index metadata fingerprint matches current source files.",
+        "scip-query config-validate: pass - Config OK.",
+        "scip-query capabilities: pass - 1 language capability row(s) available.",
+        "scip-query capability-matrix --json: pass - 1 language row(s), 0 with unavailable capability cells.",
+        "scip-query health: pass - Health score 100.",
+        "scip-query diff-impact --json: pass - Git is available and index freshness is fresh: Index metadata fingerprint matches current source files. Last refresh: reused by setup at 2026-07-29T17:24:09.918Z.",
+        "scip-query diff-gate --json: pass - Git is available and index freshness is fresh: Index metadata fingerprint matches current source files. Last refresh: reused by setup at 2026-07-29T17:24:09.918Z.",
+        "scip-query cleanup-plan --verify: pass - 1 available, 0 partial, 0 unavailable cleanup-verification row(s).",
+        "scip-query setup-hooks: pass - 0 installed, 0 updated, 2 already configured.",
+        "scip-query status --json: pass - reused pid 57060; clean-idle exit scheduled for 2026-07-29T17:33:44.755Z.",
+        "scip-query status --json: unavailable - Rust was not detected.",
+        "scip-query setup-agent: pass - 0 written, 2 already wired, 0 skipped."
+      ]
+    }
+  ],
+  "skills": {
+    "installed": [],
+    "skipped": [],
+    "alreadyLinked": [
+      "Claude/_shared",
+      "Claude/scip-query",
+      "Claude/scip-setup",
+      "Claude/scip-explore",
+      "Claude/scip-plan",
+      "Claude/scip-diagnose",
+      "Claude/scip-audit",
+      "Claude/scip-improve",
+      "Claude/scip-verify",
+      "Codex/_shared",
+      "Codex/scip-query",
+      "Codex/scip-setup",
+      "Codex/scip-explore",
+      "Codex/scip-plan",
+      "Codex/scip-diagnose",
+      "Codex/scip-audit",
+      "Codex/scip-improve",
+      "Codex/scip-verify",
+      "Agents/_shared",
+      "Agents/scip-query",
+      "Agents/scip-setup",
+      "Agents/scip-explore",
+      "Agents/scip-plan",
+      "Agents/scip-diagnose",
+      "Agents/scip-audit",
+      "Agents/scip-improve",
+      "Agents/scip-verify"
+    ],
+    "pruned": []
+  },
+  "astParsers": {
+    "supportedLanguages": [],
+    "availableBefore": [],
+    "installed": [],
+    "availableAfter": [],
+    "unavailable": [],
+    "attempted": false
+  },
+  "initialReadiness": {
+    "languages": [
+      "typescript"
+    ],
+    "indexers": [
+      {
+        "language": "typescript",
+        "binaryLabel": "scip-typescript",
+        "installed": true,
+        "runnable": true,
+        "resolvedBinary": "/opt/homebrew/bin/scip-typescript"
+      }
+    ],
+    "semantics": [
+      {
+        "language": "typescript",
+        "available": true,
+        "dependencyAvailable": true,
+        "tsconfigPath": "tsconfig.json",
+        "tsconfigPaths": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "semantic": {
+      "language": "typescript",
+      "available": true,
+      "dependencyAvailable": true,
+      "tsconfigPath": "tsconfig.json",
+      "tsconfigPaths": [
+        "tsconfig.json"
+      ]
+    },
+    "checkers": [
+      {
+        "label": "tsc --noEmit",
+        "coversExtensions": [
+          ".ts",
+          ".tsx",
+          ".mts",
+          ".cts",
+          ".js",
+          ".jsx",
+          ".vue"
+        ],
+        "strength": "reference-aware"
+      }
+    ],
+    "gitAvailable": true
+  },
+  "indexerRemediation": [],
+  "readiness": {
+    "languages": [
+      "typescript"
+    ],
+    "indexers": [
+      {
+        "language": "typescript",
+        "binaryLabel": "scip-typescript",
+        "installed": true,
+        "runnable": true,
+        "resolvedBinary": "/opt/homebrew/bin/scip-typescript"
+      }
+    ],
+    "semantics": [
+      {
+        "language": "typescript",
+        "available": true,
+        "dependencyAvailable": true,
+        "tsconfigPath": "tsconfig.json",
+        "tsconfigPaths": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "semantic": {
+      "language": "typescript",
+      "available": true,
+      "dependencyAvailable": true,
+      "tsconfigPath": "tsconfig.json",
+      "tsconfigPaths": [
+        "tsconfig.json"
+      ]
+    },
+    "checkers": [
+      {
+        "label": "tsc --noEmit",
+        "coversExtensions": [
+          ".ts",
+          ".tsx",
+          ".mts",
+          ".cts",
+          ".js",
+          ".jsx",
+          ".vue"
+        ],
+        "strength": "reference-aware"
+      }
+    ],
+    "gitAvailable": true
+  },
+  "capabilities": {
+    "languages": [
+      "typescript"
+    ],
+    "matrix": [
+      {
+        "language": "typescript",
+        "indexing": {
+          "id": "indexing",
+          "label": "SCIP indexing",
+          "status": "available",
+          "evidence": "graph-fact",
+          "reason": "scip-typescript is runnable at /opt/homebrew/bin/scip-typescript."
+        },
+        "sourceFacts": {
+          "id": "source-facts",
+          "label": "Source fallback",
+          "status": "available",
+          "evidence": "heuristic",
+          "reason": "AST/source fallback covers typescript imports and source-backed evidence."
+        },
+        "semantic": {
+          "id": "semantic",
+          "label": "Semantic provider",
+          "status": "available",
+          "evidence": "semantic",
+          "reason": "ts-morph can load the configured TypeScript project."
+        },
+        "detectors": {
+          "id": "detectors",
+          "label": "Cleanup detectors",
+          "status": "available",
+          "evidence": "heuristic",
+          "reason": "Graph-backed cleanup detectors can analyze this language; source and semantic precision depends on the rows above."
+        },
+        "cleanupVerification": {
+          "id": "cleanup-verification",
+          "label": "Cleanup verification",
+          "status": "available",
+          "evidence": "checker",
+          "reason": "tsc --noEmit"
+        }
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "indexing",
+        "label": "SCIP indexing",
+        "status": "available",
+        "evidence": "graph-fact",
+        "reason": "All detected/configured language indexers are runnable."
+      },
+      {
+        "id": "semantic-typescript",
+        "label": "TypeScript semantic provider",
+        "status": "available",
+        "evidence": "semantic",
+        "reason": "ts-morph can load the configured TypeScript project."
+      },
+      {
+        "id": "heuristic-detectors",
+        "label": "Heuristic cleanup detectors",
+        "status": "available",
+        "evidence": "heuristic",
+        "reason": "Similarity, migration, wrapper, stale-abstraction, and doc-drift detectors can run over the index."
+      },
+      {
+        "id": "cleanup-verification",
+        "label": "Project cleanup verification",
+        "status": "available",
+        "evidence": "checker",
+        "reason": "typescript: available (tsc --noEmit)"
+      },
+      {
+        "id": "diff-gate",
+        "label": "Git diff gate",
+        "status": "available",
+        "evidence": "git",
+        "reason": "Git diff data is available for changed-file gates."
+      }
+    ]
+  },
+  "freshness": {
+    "state": "fresh",
+    "checkedAt": "2026-07-29T17:24:10.035Z",
+    "metaPath": "~/.cache/scip-query/projects/fcdab20e7b02/meta.json",
+    "updatedAt": "2026-07-29T17:23:16.840Z",
+    "lastRefresh": {
+      "trigger": {
+        "kind": "setup",
+        "detail": "scip-query setup"
+      },
+      "result": "reused",
+      "startedAt": "2026-07-29T17:24:09.788Z",
+      "completedAt": "2026-07-29T17:24:09.918Z",
+      "durationMs": 129.71979199999998,
+      "indexedLanguages": [
+        "typescript"
+      ],
+      "skipped": []
+    },
+    "reason": "Index metadata fingerprint matches current source files."
+  },
+  "reindex": {
+    "languages": [
+      "typescript"
+    ],
+    "indexPath": "~/.cache/scip-query/projects/fcdab20e7b02/index.scip",
+    "dbPath": "~/.cache/scip-query/projects/fcdab20e7b02/index.db",
+    "durationMs": 129.68204200000002,
+    "reused": true,
+    "skipped": [],
+    "lastRefresh": {
+      "trigger": {
+        "kind": "setup",
+        "detail": "scip-query setup"
+      },
+      "result": "reused",
+      "startedAt": "2026-07-29T17:24:09.788Z",
+      "completedAt": "2026-07-29T17:24:09.918Z",
+      "durationMs": 129.71979199999998,
+      "indexedLanguages": [
+        "typescript"
+      ],
+      "skipped": []
+    },
+    "shards": [
+      {
+        "id": "typescript",
+        "language": "typescript",
+        "reused": true,
+        "fingerprint": "02cdff9d7b73c7d3",
+        "outputBytes": 153199,
+        "durationMs": 0
+      }
+    ]
+  },
+  "automaticRefreshConfig": null,
+  "watchService": {
+    "disposition": "reused",
+    "state": {
+      "version": 1,
+      "protocolVersion": 5,
+      "pid": 57060,
+      "processIdentity": {
+        "version": 1,
+        "pid": 57060,
+        "platform": "darwin",
+        "startToken": "Wed Jul 29 10:18:08 2026"
+      },
+      "projectRoot": ".",
+      "worktreeId": "d06dac24cf9816d2aae5a518",
+      "cliVersion": "0.20.0",
+      "startedAt": "2026-07-29T17:18:08.970Z",
+      "heartbeatAt": "2026-07-29T17:24:09.327Z",
+      "lastActivityAt": "2026-07-29T17:23:44.755Z",
+      "idleDeadlineAt": "2026-07-29T17:33:44.755Z",
+      "watcher": {
+        "state": "idle"
+      },
+      "indexGeneration": "f1d74ca59576b9ddce969dbf1209086e563f407f30cb63d835dfb947bb16b19f",
+      "lastRefresh": {
+        "trigger": {
+          "kind": "watch-source",
+          "detail": "test/coordinator.test.ts"
+        },
+        "result": "rebuilt",
+        "startedAt": "2026-07-29T17:23:16.038Z",
+        "completedAt": "2026-07-29T17:23:16.840Z",
+        "durationMs": 802.466167,
+        "indexedLanguages": [
+          "typescript"
+        ],
+        "skipped": []
+      },
+      "reindexActivity": {
+        "confidence": "complete",
+        "recordsRead": 6,
+        "invalidRecords": 0,
+        "skippedRecords": 0,
+        "readErrors": 0,
+        "ignoredPartialTailBytes": 0,
+        "windowStartedAt": "2026-07-28T17:23:16.984Z",
+        "windowEndedAt": "2026-07-29T17:23:16.984Z",
+        "runs": 6,
+        "rebuilt": 4,
+        "reused": 2,
+        "failed": 0,
+        "suppressed": 0,
+        "estimatedLogicalOutputBytes": 2171916,
+        "byTrigger": {
+          "setup": 1,
+          "watch-source": 5
+        }
+      },
+      "refreshRequests": {
+        "pending": 0,
+        "claimed": 0,
+        "completed": 0,
+        "expired": 0,
+        "invalid": 0
+      },
+      "typescriptSemantic": {
+        "protocolVersion": 3,
+        "state": "ready",
+        "requests": 12,
+        "lastRequestAt": "2026-07-29T17:23:43.885Z",
+        "sessionsCreated": 5,
+        "sessionsReused": 7,
+        "sessionsRefreshed": 3,
+        "sessionsReplaced": 1,
+        "projectsCreated": 2,
+        "mailbox": {
+          "pending": 0,
+          "inflight": 0,
+          "responses": 16,
+          "deadLetters": 4,
+          "invalid": 0,
+          "totalItems": 20,
+          "totalBytes": 56938
+        }
+      },
+      "typescriptIndex": {
+        "protocolVersion": 3,
+        "state": "ready",
+        "requests": 2,
+        "sessionsCreated": 1,
+        "sessionsReplaced": 0,
+        "initializations": 1,
+        "programUpdates": 1,
+        "documentsEmitted": 7,
+        "documentsRemoved": 0,
+        "lastRequestAt": "2026-07-29T17:23:16.497Z",
+        "lastDurationMs": 19.3452919999836,
+        "mailbox": {
+          "pending": 0,
+          "inflight": 0,
+          "responses": 2,
+          "deadLetters": 0,
+          "invalid": 0,
+          "totalItems": 2,
+          "totalBytes": 189170
+        }
+      }
+    }
+  },
+  "rustSemanticSession": null,
+  "health": {
+    "score": 100,
+    "riskScore": 100,
+    "hygieneScore": 100,
+    "issuesNeedAttention": [
+      {
+        "category": "Stale abstractions",
+        "description": "2 single-consumer (not in types file) — review public, runtime-registration, and ownership evidence before removing, moving, or inlining",
+        "count": 2,
+        "impact": "medium",
+        "effort": "low",
+        "evidence": "heuristic",
+        "locRecoverable": 10,
+        "confirmationStatus": "unconfirmed",
+        "safeForAgentToStart": false,
+        "recommendedNextStep": "Run scip-audit to confirm this signal; use scip-improve when the user wants confirmed issues fixed autonomously."
+      }
+    ],
+    "warnings": []
+  },
+  "smokeTests": [
+    {
+      "id": "reindex",
+      "command": "scip-query reindex",
+      "status": "pass",
+      "evidence": "typescript indexed from cache."
+    },
+    {
+      "id": "status",
+      "command": "scip-query status",
+      "status": "pass",
+      "evidence": "Index freshness is fresh: Index metadata fingerprint matches current source files."
+    },
+    {
+      "id": "config-validate",
+      "command": "scip-query config-validate",
+      "status": "pass",
+      "evidence": "Config OK."
+    },
+    {
+      "id": "capabilities",
+      "command": "scip-query capabilities",
+      "status": "pass",
+      "evidence": "1 language capability row(s) available."
+    },
+    {
+      "id": "capability-matrix",
+      "command": "scip-query capability-matrix --json",
+      "status": "pass",
+      "evidence": "1 language row(s), 0 with unavailable capability cells."
+    },
+    {
+      "id": "health",
+      "command": "scip-query health",
+      "status": "pass",
+      "evidence": "Health score 100."
+    },
+    {
+      "id": "diff-impact",
+      "command": "scip-query diff-impact --json",
+      "status": "pass",
+      "evidence": "Git is available and index freshness is fresh: Index metadata fingerprint matches current source files. Last refresh: reused by setup at 2026-07-29T17:24:09.918Z."
+    },
+    {
+      "id": "diff-gate",
+      "command": "scip-query diff-gate --json",
+      "status": "pass",
+      "evidence": "Git is available and index freshness is fresh: Index metadata fingerprint matches current source files. Last refresh: reused by setup at 2026-07-29T17:24:09.918Z."
+    },
+    {
+      "id": "cleanup-verification",
+      "command": "scip-query cleanup-plan --verify",
+      "status": "pass",
+      "evidence": "1 available, 0 partial, 0 unavailable cleanup-verification row(s)."
+    },
+    {
+      "id": "setup-hooks",
+      "command": "scip-query setup-hooks",
+      "status": "pass",
+      "evidence": "0 installed, 0 updated, 2 already configured."
+    },
+    {
+      "id": "watch-refresh",
+      "command": "scip-query status --json",
+      "status": "pass",
+      "evidence": "reused pid 57060; clean-idle exit scheduled for 2026-07-29T17:33:44.755Z."
+    },
+    {
+      "id": "rust-semantic-session",
+      "command": "scip-query status --json",
+      "status": "unavailable",
+      "evidence": "Rust was not detected."
+    },
+    {
+      "id": "setup-agent",
+      "command": "scip-query setup-agent",
+      "status": "pass",
+      "evidence": "0 written, 2 already wired, 0 skipped."
+    }
+  ],
+  "healthDossier": {
+    "markdownPath": "docs/scip-query/health-dossier.md",
+    "jsonPath": "docs/scip-query/health-dossier.json",
+    "status": "written",
+    "written": [],
+    "unchanged": []
+  },
+  "hooks": {
+    "installed": [],
+    "updated": [],
+    "unchanged": [
+      ".codex/hooks.json",
+      ".claude/settings.local.json"
+    ],
+    "removed": [],
+    "gitExcluded": [
+      ".codex/hooks.json",
+      ".claude/settings.local.json"
+    ],
+    "warnings": [],
+    "skipped": []
+  },
+  "setupAgent": {
+    "written": [],
+    "unchanged": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "skipped": []
+  },
+  "changeScopes": {
+    "repository": [],
+    "checkout": [
+      ".codex/hooks.json",
+      ".claude/settings.local.json"
+    ],
+    "user": []
+  },
+  "filesWritten": [],
+  "verdict": "partial",
+  "generatedAt": "2026-07-29T17:24:11.859Z"
+}

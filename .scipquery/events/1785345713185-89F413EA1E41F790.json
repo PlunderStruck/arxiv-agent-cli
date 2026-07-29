@@ -1,0 +1,36 @@
+{
+  "ts": 1785345713185,
+  "check": "new-dead",
+  "findingId": "SQ069C953111F4",
+  "event": "caught",
+  "commit": null,
+  "comparisonBaseCommit": "f8af48cd813451ab7245c757be7397a019fe1b58",
+  "symbol": "scip-typescript npm arxiv-agent-cli 0.1.0 src/http/`transport.ts`/UnsupportedProtocolError#",
+  "gateRunId": "73cafd70-2fd9-4617-8314-ac41014b72d2",
+  "observer": {
+    "kind": "local-agent",
+    "authority": "repository-writable"
+  },
+  "observation": {
+    "schemaVersion": 1,
+    "authorityKind": "index-worktree",
+    "observedAt": "2026-07-29T17:21:53.185Z",
+    "projectIdentity": "fcdab20e7b0289d616bedfa90938fa166acebcdc3cc41a9e428d5282e9520941",
+    "index": {
+      "generationIdentity": "97acd5cf8f1ed2e1a2ab748a9b975cda709f3e3e6419f11c491602ab0111f7f1",
+      "source": "immutable",
+      "alignment": "not-certified"
+    },
+    "worktree": {
+      "identity": "304180bffd1eb5e1142e77c8d043e5aa8f691caff8a6cd5fc47703a2f81e38fb",
+      "clean": false
+    }
+  },
+  "kind": "scip-query-outcome-event",
+  "schemaVersion": 1,
+  "eventIdentity": "[\"new-dead\",\"SQ069C953111F4\",\"caught\",null]",
+  "writer": {
+    "tool": "scip-query",
+    "version": "0.20.0"
+  }
+}
