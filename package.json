@@ -1,12 +1,19 @@
 {
   "name": "arxiv-agent-cli",
   "version": "0.1.0",
-  "private": true,
   "description": "A bounded, durable arXiv CLI designed for autonomous coding agents",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PlunderStruck/arxiv-agent-cli.git"
+    "url": "git+https://github.com/PlunderStruck/arxiv-agent-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PlunderStruck/arxiv-agent-cli/issues"
+  },
+  "homepage": "https://github.com/PlunderStruck/arxiv-agent-cli#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "type": "module",
   "bin": {
@@ -27,6 +34,7 @@
     "test": "npm run build && node --test --test-reporter=spec dist/test/*.test.js",
     "verify": "npm run typecheck && npm test && npm pack --dry-run",
     "smoke": "npm run build && ./scripts/upstream-smoke.sh",
+    "prepublishOnly": "npm run verify",
     "prepack": "npm run build"
   },
   "devDependencies": {

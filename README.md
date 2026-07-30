@@ -11,7 +11,13 @@ Its network gate coordinates all invocations by one operating-system user on one
 - A local filesystem for both the runtime coordinator and paper library
 
 ```sh
-git clone https://github.com/aydansalois/arxiv-agent-cli.git
+npm install --global arxiv-agent-cli
+```
+
+To install the bundled agent skill as well:
+
+```sh
+git clone https://github.com/PlunderStruck/arxiv-agent-cli.git
 cd arxiv-agent-cli
 ./install.sh
 ```
@@ -119,21 +125,50 @@ npm run smoke    # a handful of real, paced requests against live arXiv
 
 CI verifies every push against the declared Node floor and the newest release, on Linux and macOS, and separately exercises `install.sh` end to end.
 
-To release:
+The first npm publication is a one-time bootstrap because npm requires the
+package to exist before it can trust a GitHub workflow:
+
+```sh
+npm login
+npm whoami
+npm publish --access public
+npm trust github arxiv-agent-cli \
+  --file release.yml \
+  --repository PlunderStruck/arxiv-agent-cli \
+  --environment npm \
+  --allow-publish
+npm trust list arxiv-agent-cli
+```
+
+The npm account must have two-factor authentication enabled. Do not create an
+`NPM_TOKEN`: subsequent releases use a short-lived identity bound to
+`.github/workflows/release.yml` and the protected GitHub environment named
+`npm`.
+
+For each later release:
 
 ```sh
 # 1. bump the version in BOTH package.json and src/cli.ts (CLI_VERSION)
 npm run verify          # the suite fails loudly if the two disagree
 npm run smoke           # confirm upstream is healthy before shipping
-git tag v0.2.0 && git push origin v0.2.0
+git commit -am "release: v0.2.0"
+git push origin main
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
-The tag triggers a release build that re-runs the full gate, refuses a tag that disagrees with `package.json`, and publishes a verified tarball.
+Approve the `npm` environment deployment in GitHub. The workflow builds once
+without publish authority, publishes that exact tarball to npm through OIDC
+with provenance, and attaches the same bytes to the GitHub release.
 
-To roll back, reinstall the last good tag:
+An npm name/version pair cannot be overwritten. To recover from a bad release,
+deprecate it and publish a corrected patch:
 
 ```sh
-git fetch --tags && git checkout v0.1.0 && ./install.sh
+npm deprecate arxiv-agent-cli@0.2.0 "Defective release; upgrade to 0.2.1"
+# bump both version declarations to 0.2.1, verify, commit, and tag v0.2.1
 ```
 
-`install.sh` is idempotent and relinks in place, so recovery does not require uninstalling first. Because the library and coordinator live outside the checkout, rolling the binary back leaves downloaded papers and index history intact.
+For a local checkout rollback, reinstall the last good Git tag with
+`./install.sh`. The installer relinks in place and leaves the paper library and
+index history intact.

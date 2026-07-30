@@ -14,6 +14,13 @@ const packageRoot = new URL("../../", import.meta.url);
 interface PackageManifest {
   readonly version: string;
   readonly private?: boolean;
+  readonly repository?: {
+    readonly url?: string;
+  };
+  readonly publishConfig?: {
+    readonly access?: string;
+    readonly registry?: string;
+  };
   readonly bin?: Record<string, string>;
   readonly files?: readonly string[];
   readonly engines?: Record<string, string>;
@@ -64,6 +71,32 @@ test("the package ships the built CLI and the skill, and never the test tree", a
     !files.some((entry) => entry.startsWith("dist/test") || entry === "dist"),
     "the compiled test tree must stay out of the tarball.",
   );
+});
+
+test("the manifest can publish only as a public npmjs package from this repository", async () => {
+  const manifest = await readManifest();
+  assert.notEqual(manifest.private, true, "the release manifest must not be private.");
+  assert.equal(manifest.publishConfig?.access, "public");
+  assert.equal(manifest.publishConfig?.registry, "https://registry.npmjs.org/");
+  assert.equal(
+    manifest.repository?.url,
+    "git+https://github.com/PlunderStruck/arxiv-agent-cli.git",
+  );
+});
+
+test("the privileged release job uses OIDC without building or reading an npm token", async () => {
+  const workflow = await readFile(
+    new URL(".github/workflows/release.yml", packageRoot),
+    "utf8",
+  );
+  assert.match(workflow, /\bid-token:\s*write\b/);
+  assert.match(workflow, /\benvironment:\s*npm\b/);
+  assert.match(workflow, /npm publish "\$tarball" --access public/);
+  assert.doesNotMatch(workflow, /\b(?:NPM_TOKEN|NODE_AUTH_TOKEN)\b/);
+
+  const privilegedJob = workflow.split(/\n  publish:\s*\n/, 2)[1];
+  assert.ok(privilegedJob, "release workflow must contain a publish job.");
+  assert.doesNotMatch(privilegedJob, /\bnpm ci\b|\bnpm run\b|actions\/checkout@/);
 });
 
 test("the declared node floor is the floor the release is verified against", async () => {
