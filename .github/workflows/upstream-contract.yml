@@ -60,7 +60,5 @@ jobs:
             gh issue create \
               --title "Upstream contract with arXiv is broken" \
               --label upstream-contract \
-              --body "The scheduled live smoke test failed. Real arXiv no longer behaves the way the hermetic suite assumes, so the unit tests are still green. Do not ship until this is understood.
-
-Run: $RUN_URL"
+              --body "The scheduled live smoke test failed. Real arXiv no longer behaves the way the hermetic suite assumes, so the unit tests are still green. Do not ship until this is understood. Run: $RUN_URL"
           fi

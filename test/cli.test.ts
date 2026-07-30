@@ -25,7 +25,7 @@ test("compiled CLI executes when launched through the installed symlink shape", 
   const compiledCli = fileURLToPath(new URL("../src/cli.js", import.meta.url));
   try {
     await symlink(compiledCli, executable);
-    const result = await execFileAsync(executable, ["--version"]);
+    const result = await execFileAsync(process.execPath, [executable, "--version"]);
     assert.equal(result.stdout.trim(), CLI_VERSION);
     assert.equal(result.stderr, "");
   } finally {
