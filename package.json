@@ -38,8 +38,8 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@rgrove/parse-xml": "^4.2.3",
