@@ -2,12 +2,17 @@
 set -eu
 
 PROJECT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-SKILL_SOURCE="$PROJECT_ROOT/skills/arxiv"
 
 cd "$PROJECT_ROOT"
 npm ci
 npm run build
 npm link
+
+# Only the arxiv skill is installed from here. The epistemics pack that also lives
+# under skills/ is published from the agent-skills repo, which is where the
+# canonical, generalized copy is maintained and where the global symlinks point.
+# Linking it from here too would silently repoint those at this repo's copy.
+SKILL_SOURCE="$PROJECT_ROOT/skills/arxiv"
 
 for SKILL_ROOT in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills"; do
   mkdir -p "$SKILL_ROOT"

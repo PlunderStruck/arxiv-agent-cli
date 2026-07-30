@@ -262,7 +262,14 @@ function createTestMutex(databasePath: string): SqliteMutex {
   return new SqliteMutex({
     databasePath,
     busyTimeoutMs: 10,
-    acquisitionTimeoutMs: 2_000,
+    // This test deliberately makes the waiter block until the holder's socket
+    // closes, and asserts only the ordering of those two events. Any wall-clock
+    // acquisition cap here is therefore scaffolding that can only produce false
+    // failures when CI scheduling stalls the holder: it turns "the machine was
+    // busy" into "the mutex is broken". Keep it far above any plausible stall so
+    // a genuine failure to release still surfaces, as a timeout rather than a
+    // hang, without load being able to trip it.
+    acquisitionTimeoutMs: 60_000,
     retryDelayMinMs: 2,
     retryDelayMaxMs: 5,
   });

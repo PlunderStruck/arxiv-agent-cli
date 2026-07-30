@@ -102,9 +102,38 @@ The bundled `skills/arxiv/SKILL.md` teaches agents to triage abstracts, download
 ## Verification
 
 ```sh
-npm run typecheck
-npm test
-npm pack --dry-run
+npm run verify   # typecheck, full suite, and a publishable tarball
 ```
 
 The suite covers ID/path safety, Atom error handling, output caps, cache behavior, exact/base version resolution, atomic library membership, offline repair, cross-process mutex release, shared pacing and breaker state, aborting HTTP lifecycle, TLS session resumption, retries, redirect refusal, and PDF validation.
+
+It is hermetic. No test contacts arXiv, so the suite is fast and deterministic and CI never adds load upstream. The cost of that choice is that it cannot detect arXiv itself changing:
+
+```sh
+npm run smoke    # a handful of real, paced requests against live arXiv
+```
+
+`smoke` runs on a daily schedule in CI and files an issue when the upstream contract breaks. Run it manually before a release. Do not wire it into a per-push job: the pacing guarantee is per-process, so overlapping runs are two uncoordinated clients.
+
+## Releasing and rollback
+
+CI verifies every push against the declared Node floor and the newest release, on Linux and macOS, and separately exercises `install.sh` end to end.
+
+To release:
+
+```sh
+# 1. bump the version in BOTH package.json and src/cli.ts (CLI_VERSION)
+npm run verify          # the suite fails loudly if the two disagree
+npm run smoke           # confirm upstream is healthy before shipping
+git tag v0.2.0 && git push origin v0.2.0
+```
+
+The tag triggers a release build that re-runs the full gate, refuses a tag that disagrees with `package.json`, and publishes a verified tarball.
+
+To roll back, reinstall the last good tag:
+
+```sh
+git fetch --tags && git checkout v0.1.0 && ./install.sh
+```
+
+`install.sh` is idempotent and relinks in place, so recovery does not require uninstalling first. Because the library and coordinator live outside the checkout, rolling the binary back leaves downloaded papers and index history intact.

@@ -1,0 +1,66 @@
+name: Upstream contract
+
+# The unit suite never touches the network, so arXiv can change its Atom feed,
+# redirects, or PDF delivery without turning a single test red. This workflow
+# is the only thing that would notice.
+#
+# It runs on a schedule rather than per-push for two reasons: a green PR should
+# not depend on a third party being up, and this project's entire premise is
+# being a well-behaved arXiv client. CI must not become the thing that hammers
+# them.
+
+on:
+  schedule:
+    # Daily, early UTC. Weekday mornings surface upstream drift before anyone
+    # is deciding whether to ship.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+# Never let two live runs overlap: the pacing guarantee is per-process, so
+# concurrent runs would be two uncoordinated clients.
+concurrency:
+  group: upstream-contract
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  smoke:
+    name: live arXiv smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.15.0"
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Verify live arXiv still matches our assumptions
+        run: ./scripts/upstream-smoke.sh
+
+      - name: Report a broken upstream contract
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          existing=$(gh issue list --label upstream-contract --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Upstream smoke failed again: $RUN_URL"
+          else
+            gh issue create \
+              --title "Upstream contract with arXiv is broken" \
+              --label upstream-contract \
+              --body "The scheduled live smoke test failed. Real arXiv no longer behaves the way the hermetic suite assumes, so the unit tests are still green. Do not ship until this is understood.
+
+Run: $RUN_URL"
+          fi

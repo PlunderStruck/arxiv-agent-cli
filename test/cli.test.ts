@@ -1,18 +1,37 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { mkdtemp, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 import type { AtomFeed, PaperMetadata } from "../src/arxiv/atom.js";
 import type { ArxivClientApi } from "../src/arxiv/client.js";
 import type { SearchQueryOptions } from "../src/arxiv/query.js";
 import { QueryCache } from "../src/cache.js";
-import { runCli } from "../src/cli.js";
+import { CLI_VERSION, runCli } from "../src/cli.js";
 import type { CommandContext } from "../src/commands/context.js";
 import { LibraryStore } from "../src/library/store.js";
 import { makeMetadata } from "./fixtures/metadata.js";
 import { makeTestPdf } from "./fixtures/pdf.js";
+
+const execFileAsync = promisify(execFile);
+
+test("compiled CLI executes when launched through the installed symlink shape", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "arxiv-bin-"));
+  const executable = join(directory, "arxiv");
+  const compiledCli = fileURLToPath(new URL("../src/cli.js", import.meta.url));
+  try {
+    await symlink(compiledCli, executable);
+    const result = await execFileAsync(executable, ["--version"]);
+    assert.equal(result.stdout.trim(), CLI_VERSION);
+    assert.equal(result.stderr, "");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
 
 test("CLI refuses output and download caps before calling the client", async () => {
   const fixture = await cliFixture();

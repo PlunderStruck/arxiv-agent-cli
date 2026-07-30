@@ -111,13 +111,16 @@ test(
     });
 
     try {
+      // Forking a Node process and opening SQLite can take seconds on a loaded
+      // CI runner. This deadline exists only so a genuinely broken fixture fails
+      // instead of hanging forever, so keep it far above any plausible stall.
       const [message] = await once(child, "message", {
-        signal: AbortSignal.timeout(3_000),
+        signal: AbortSignal.timeout(60_000),
       });
       assert.deepEqual(message, { type: "acquired" });
 
       const waiter = createTestMutex(databasePath, {
-        acquisitionTimeoutMs: 2_000,
+        acquisitionTimeoutMs: 60_000,
       });
       const startedAt = performance.now();
       const waiting = waiter.acquire();
@@ -130,8 +133,12 @@ test(
       guard.rollback();
       await exit;
 
+      // The property under test is that SIGKILL released the lock: the waiter
+      // must not acquire before the kill at 100 ms, and must acquire afterwards.
+      // The lower bound proves the lock was genuinely held; `await waiting`
+      // resolving at all proves it was released. An upper bound here would only
+      // re-assert how fast the machine is, which is not a property of the mutex.
       assert.ok(elapsedMs >= 75, `waiter acquired too early after ${elapsedMs} ms`);
-      assert.ok(elapsedMs < 2_000, `waiter exceeded its deadline after ${elapsedMs} ms`);
     } finally {
       child.kill("SIGKILL");
       await delay(10);

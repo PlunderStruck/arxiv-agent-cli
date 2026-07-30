@@ -1,0 +1,23 @@
+version: 2
+
+# Staying close to current is a release-confidence measure, not housekeeping.
+# A team that is one small dependency bump behind can ship on a Friday. A team
+# that is eighteen months behind cannot upgrade without a risky big-bang change.
+# The surface here is deliberately tiny (two runtime dependencies), so keeping
+# it current costs almost nothing.
+
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for dev tooling: these land together or not at all.
+      dev-tooling:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly

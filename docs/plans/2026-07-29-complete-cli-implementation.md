@@ -11,7 +11,7 @@ An **implementation certificate** is a completion record that ties a planned sof
 | Measure | Before implementation | Completed state |
 |---|---:|---:|
 | Production TypeScript files | 0 | 20 |
-| Automated test cases | 0 | 39 |
+| Automated test cases | 0 | 40 |
 | CLI command families | 0 | 6 |
 | Runtime dependencies | planned 2 | 2, both zero-transitive |
 | Live arXiv path | design observations only | search, download, list, and page text exercised |
@@ -47,32 +47,31 @@ These lenses changed the plan and implementation materially: exact cold download
 The final source state passed:
 
 - `npm run typecheck`
-- `npm test`: 39 passed, 0 failed
+- `npm test`: 40 passed, 0 failed
 - `sh -n install.sh`; the installer is executable
 - `node dist/src/cli.js --help`
 - `npm pack --dry-run`
 - live arXiv search, immediate cached repeat, base-ID resolution, and exact-version PDF download
 - live library listing of a validated 1,472,363-byte, 17-page PDF
 - live page-1 extraction as valid JSON with zero stderr bytes
+- global `/opt/homebrew/bin/arxiv` launch through its npm symlink, plus all three installed skill links
 - SCIP configuration validation, repository health checks, dependency/consumer inspection, cycle checks, unused-parameter checks, and similarity checks
 
 The tests include real child-process contention and SIGKILL behavior, local HTTP/TLS fixtures, response lifecycle ordering, TLS session reuse, retry and redirect refusal, body limits, PDF rejection, ID/path safety, cache bounds, reconciliation, repair, version ambiguity, output limits, and CLI recovery.
 
 ## Deviations and verification limits
 
-- The repository worktree has a valid `HEAD`, but every project file is currently untracked. No commit was created because publication was not requested. Consequently SCIP's history-dependent co-change and documentation-drift checks have no repository history to analyze, and its Git-diff impact view cannot compare these files to the tracked baseline.
-- SCIP's final `diff-gate` was invoked and failed closed before running checks because Git exposes no tracked diff for an entirely untracked worktree. The individually runnable compiler, graph, cleanup, and test checks were therefore executed directly.
+- The initial implementation is committed at `ddc28de`. History-dependent checks have only that initial baseline and therefore cannot yet infer meaningful co-change patterns.
+- SCIP's pre-initial-commit `diff-gate` failed closed because an unborn branch has no `HEAD`. After the initial commit established a baseline, the gate ran successfully and the installed-entry-point fix introduced no findings.
 - Six wrapper candidates were retained as deliberate domain, durability, or transport boundaries; six single-consumer types were retained as named cross-layer contracts. The detector found no passthrough candidates, redundant re-exports, cycles, reachable stubs, unused trailing parameters, or test-quality findings.
 - The plan's external agent acceptance harness intentionally lives outside the repository and outside the implementing agent's write access. It was not available here. This is an independent product-acceptance gate, not unfinished repository implementation.
-- The installer was syntax-checked and the package was assembled, but `npm link` and the three home-directory skill symlinks were not executed because those operations mutate the user's global environment.
 - Multi-host coordination, unrelated arXiv clients, other operating-system users, Windows, NFS, and SMB remain explicitly outside version 1.
 
 ## Deferred external checks
 
 1. Run the tamper-resistant external agent prompt matrix and grade transcript, request, download, and page-read budgets.
-2. Run `./install.sh` on the intended host, then verify `arxiv --version` and the three skill symlinks.
-3. Establish an external coordinator before operating concurrently from more than one host.
+2. Establish an external coordinator before operating concurrently from more than one host.
 
 ## Completion verdict
 
-**IMPLEMENTED — the repository product described by the plan is built and locally verified.** Remaining items require an independent grader, permission to mutate the user's installation, or a version-2 scope expansion.
+**IMPLEMENTED — the repository product described by the plan is built, installed, and locally verified.** Remaining items require an independent grader or a version-2 scope expansion.

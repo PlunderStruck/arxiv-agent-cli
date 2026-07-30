@@ -1,0 +1,38 @@
+{
+  "ts": 1785351080723,
+  "check": "new-dead",
+  "findingId": "SQ01E38E09C10E",
+  "event": "resolved",
+  "commit": "ddc28dead478bba3b549ac36b94a905d0045eb40",
+  "comparisonBaseCommit": "ddc28dead478bba3b549ac36b94a905d0045eb40",
+  "verifiedAgainstCommit": "f8af48cd813451ab7245c757be7397a019fe1b58",
+  "gateRunId": "504a4b7a-1308-43d8-ad83-653148d1c225",
+  "observer": {
+    "kind": "local-agent",
+    "authority": "repository-writable"
+  },
+  "observation": {
+    "schemaVersion": 1,
+    "authorityKind": "index-worktree",
+    "observedAt": "2026-07-29T18:51:20.723Z",
+    "projectIdentity": "fcdab20e7b0289d616bedfa90938fa166acebcdc3cc41a9e428d5282e9520941",
+    "index": {
+      "generationIdentity": "fadf8fc8996926c834c89e95bf9f3dfe82d6b4615d14313d077d7f006e84dec6",
+      "source": "immutable",
+      "alignment": "not-certified"
+    },
+    "worktree": {
+      "identity": "f0934458c62835a1f75fdfc0c42b9eb55bc2e874f1af3b60c858e964f8393f73",
+      "clean": true,
+      "headCommit": "ddc28dead478bba3b549ac36b94a905d0045eb40",
+      "treeOid": "f60ce6c578762117bfdda2aed6fc715cb43b5acf"
+    }
+  },
+  "kind": "scip-query-outcome-event",
+  "schemaVersion": 1,
+  "eventIdentity": "[\"new-dead\",\"SQ01E38E09C10E\",\"resolved\",\"ddc28dead478bba3b549ac36b94a905d0045eb40\"]",
+  "writer": {
+    "tool": "scip-query",
+    "version": "0.20.0"
+  }
+}

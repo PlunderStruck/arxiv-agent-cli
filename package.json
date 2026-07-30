@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aydansalois/arxiv-agent-cli.git"
+    "url": "https://github.com/PlunderStruck/arxiv-agent-cli.git"
   },
   "type": "module",
   "bin": {
@@ -24,7 +24,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test --test-reporter=spec dist/test/*.test.js"
+    "test": "npm run build && node --test --test-reporter=spec dist/test/*.test.js",
+    "verify": "npm run typecheck && npm test && npm pack --dry-run",
+    "smoke": "npm run build && ./scripts/upstream-smoke.sh",
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

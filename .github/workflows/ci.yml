@@ -1,0 +1,108 @@
+name: CI
+
+# Every change is verified by a machine before it can reach anyone's shell.
+# This workflow is deliberately hermetic: it never contacts arXiv, so it is
+# fast, deterministic, and safe to run on every push. Upstream reality is
+# checked separately by upstream-contract.yml on a schedule.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify (node ${{ matrix.node }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # The lower bound is the version package.json promises to support.
+        # Testing only the newest release would make that promise unverified.
+        node: ["24.15.0", "26"]
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies from the lockfile
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Verify the publishable tarball builds and stays bounded
+        run: npm pack --dry-run
+
+  install-path:
+    name: install path (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.15.0"
+          cache: npm
+
+      # install.sh is how every user actually gets this tool. A green unit
+      # suite on an unlinked working tree says nothing about whether the
+      # linked executable runs, which is the failure users would see first.
+      - name: Use a writable, deterministic npm prefix
+        run: |
+          npm config set prefix "$HOME/.npm-global"
+          echo "$HOME/.npm-global/bin" >> "$GITHUB_PATH"
+
+      - name: Run the documented installer
+        run: ./install.sh
+
+      - name: The linked executable runs and reports the released version
+        run: |
+          set -eu
+          expected=$(node -p "require('./package.json').version")
+          actual=$(arxiv --version)
+          if [ "$expected" != "$actual" ]; then
+            echo "installed arxiv reports $actual, package.json says $expected" >&2
+            exit 1
+          fi
+          arxiv --help > /dev/null
+
+      - name: The installer is idempotent
+        run: ./install.sh
+
+      - name: The agent skill is linked into every skill root
+        run: |
+          set -eu
+          for root in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills"; do
+            test -L "$root/arxiv" || { echo "missing symlink: $root/arxiv" >&2; exit 1; }
+            test -f "$root/arxiv/SKILL.md" || { echo "broken symlink: $root/arxiv" >&2; exit 1; }
+          done
+
+      - name: The installer refuses to clobber a real directory
+        run: |
+          set -eu
+          rm -f "$HOME/.claude/skills/arxiv"
+          mkdir -p "$HOME/.claude/skills/arxiv"
+          if ./install.sh; then
+            echo "installer overwrote a real directory" >&2
+            exit 1
+          fi

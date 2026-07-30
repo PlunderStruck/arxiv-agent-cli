@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+import { realpathSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
-import { resolve } from "node:path";
 
 import { createProductionArxivClient } from "./arxiv/client.js";
 import type { SearchQueryOptions, SearchSort } from "./arxiv/query.js";
@@ -416,7 +416,7 @@ Environment:
 const invokedPath = process.argv[1];
 if (
   invokedPath !== undefined &&
-  resolve(invokedPath) === resolve(fileURLToPath(import.meta.url))
+  realpathSync(invokedPath) === realpathSync(fileURLToPath(import.meta.url))
 ) {
   process.exitCode = await runCli(process.argv.slice(2));
 }

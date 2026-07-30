@@ -1,0 +1,72 @@
+name: Release
+
+# A release is a tag plus an immutable, verified tarball.
+#
+# Rollback is the reason this exists. Without a published artifact per version,
+# undoing a bad release means asking every user to find the right commit. With
+# it, undoing is: check out the previous tag and re-run install.sh.
+#
+# The same verification that gates a pull request gates a tag. A tag can never
+# ship code that CI has not proven, because this workflow re-runs it.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: verify and publish artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.15.0"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Re-run the full gate against the tagged tree
+        run: |
+          npm run typecheck
+          npm test
+
+      - name: The tag must match the version the code reports
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -eu
+          # A tag that disagrees with package.json produces a release whose
+          # name and contents describe different builds.
+          manifest=$(node -p "require('./package.json').version")
+          case "$REF_NAME" in
+            v*) tagged=${REF_NAME#v} ;;
+            *)  tagged=$REF_NAME ;;
+          esac
+          if [ "$tagged" != "$manifest" ]; then
+            echo "tag $REF_NAME does not match package.json version $manifest" >&2
+            exit 1
+          fi
+
+      - name: Build the release tarball
+        run: npm pack
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -eu
+          gh release create "$REF_NAME" ./*.tgz \
+            --title "$REF_NAME" \
+            --generate-notes
