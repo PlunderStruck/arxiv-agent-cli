@@ -42,7 +42,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@rgrove/parse-xml": "^4.2.3",
+    "@rgrove/parse-xml": "^5.0.0",
     "unpdf": "^1.8.0"
   }
 }
